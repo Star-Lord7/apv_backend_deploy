@@ -29,10 +29,13 @@ const corsOptions = {
         }
 
         callback(new Error('No permitido por CORS'));
-    }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 app.use(cors(corsOptions)); // Configuramos CORS para permitir solicitudes desde los dominios especificados
+app.options('*', cors(corsOptions));
 
 // Configuramos la ruta principal de la API
 app.use('/api/veterinarios', veterinarioRoutes);
