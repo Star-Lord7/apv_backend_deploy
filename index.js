@@ -35,7 +35,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions)); // Configuramos CORS para permitir solicitudes desde los dominios especificados
-app.options('*', cors(corsOptions));
 
 // Configuramos la ruta principal de la API
 app.use('/api/veterinarios', veterinarioRoutes);
