@@ -13,18 +13,24 @@ dotenv.config(); // Cargamos las variables de entorno desde el archivo .env
 
 conectarDB(); // Conectamos a la base de datos
 
-const dominiosPermitidos = [process.env.FRONTEND_URL]; // Lista de dominios permitidos para CORS
+const dominiosPermitidos = [process.env.FRONTEND_URL];
 
 const corsOptions = {
-    origin: function(origin, callback){
-        // Si el "origin" esta registrado en "dominiosPermitidos", permitimos la solicitud
-        if(dominiosPermitidos.indexOf(origin) !== -1){
-            callback(null, true); // Si el origen está permitido, continuamos
-        }else{
-            callback(new Error('No permitido por CORS')); // Si no está permitido, lanzamos un error
+    origin: function (origin, callback) {
+
+        // Permitir solicitudes sin origen (como las realizadas desde Postman o curl)
+        if (!origin) {
+            return callback(null, true);
         }
+
+        // Verificamos si el origen de la solicitud está en la lista de dominios permitidos
+        if (dominiosPermitidos.includes(origin)) {
+            return callback(null, true);
+        }
+
+        callback(new Error('No permitido por CORS'));
     }
-}
+};
 
 app.use(cors(corsOptions)); // Configuramos CORS para permitir solicitudes desde los dominios especificados
 
